@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Jump",
+  "version": "1.0",
+  "description": "Get Places Quicker",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "jump.png",
+      "48": "jump.png",
+      "128": "jump.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["JavaScript.js"]
+    }
+  ]
+}
