@@ -7,3 +7,6 @@ Jump can be installed by downloading the files from the repository and extractin
 
 # Usage
 Jump can be used by pressing the extensions button in the top right (typically) in your browser, from there you can press Jump and it will appear, here you can type in your query, for example: `cars for sale`, this took me to a used cars website. Jump is very accurate thanks to the use of the [Serper.dev API](https://serper.dev/playground).
+
+# API Tokens
+Jump requires an API token due to people abusing the one I previously provided, you can get a free API token by signing up at [Serper.dev API](https://serper.dev/playground)
