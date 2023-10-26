@@ -1,29 +1,43 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Get references to the input field, button, and results div.
-    var searchInput = document.getElementById('textInput');
-    var searchButton = document.getElementById('submitButton');
-    
-    searchButton.addEventListener('click', function () {
-        // Get the user's search query from the input field.
-        var query = searchInput.value;
+    var SearchInput = document.getElementById('TextInput');
+    var SearchButton = document.getElementById('SubmitButton');
+    var TokenInput = document.getElementById('TokenInput');
+    var ErrorText = document.createElement('div');
+    TokenInput.value = localStorage.getItem("Token");
 
-        // Check if the query is empty and return early if it is.
-        if (query === "") {
+    ErrorText.textContent = 'Token cannot be empty';
+    ErrorText.style.color = 'red';
+    ErrorText.style.display = 'none';
+
+    TokenInput.parentNode.appendChild(ErrorText);
+
+    SearchButton.addEventListener('click', function () {
+        var Query = SearchInput.value;
+        var Token = TokenInput.value;
+        localStorage.setItem('Token', TokenInput.value);
+
+        if (Query === "") {
             return;
         }
 
-        // Make an API request to serper.dev.
-        var myHeaders = new Headers();
-        myHeaders.append("X-API-KEY", "091fcb370ddd5cb6b6797c0caf9174c62a265201");
-        myHeaders.append("Content-Type", "application/json");
+        if (Token === "") {
+            ErrorText.style.display = 'block';
+            return;
+        }
+
+        ErrorText.style.display = 'none';
+
+        var ReqHeaders = new Headers();
+        ReqHeaders.append("X-API-KEY", Token);
+        ReqHeaders.append("Content-Type", "application/json");
 
         var requestBody = {
-            "q": query
+            "q": Query
         };
 
         var requestOptions = {
             method: 'POST',
-            headers: myHeaders,
+            headers: ReqHeaders,
             body: JSON.stringify(requestBody),
             redirect: 'follow'
         };
@@ -31,13 +45,8 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch("https://google.serper.dev/search", requestOptions)
             .then(response => response.json())
             .then(data => {
-                // Extract the URL from the first "organic" result.
                 if (data.organic && data.organic.length > 0) {
-                    var firstResult = data.organic[0];
-                    var firstResultURL = firstResult.link;
-
-                    // Open the URL in a new tab.
-                    window.open(firstResultURL, '_blank');
+                    window.open(data.organic[0].link, '_blank');
                 }
             })
             .catch(error => console.log('Error:', error));
